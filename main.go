@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 
 	"cloud.google.com/go/logging"
@@ -31,26 +32,23 @@ func main() {
 	}
 	defer client.Close()
 	logger := client.Logger(logName)
-	logger.Log(logging.Entry{
-		Payload:  fmt.Sprintf("%s online", logName),
-		Severity: logging.Notice,
-	})
+
+	notice := logger.StandardLogger(logging.Notice)
+	notice.SetPrefix(fmt.Sprintf("%s[%d]", logName, os.Getpid()))
+
+	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
 	r := dialAndAuth(logger)
 	defer r.Close()
+
+	notice.Print("Online!")
 	monitor(r, logger)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")
 
-	logger.Log(logging.Entry{
-		Payload:  fmt.Sprintf("Calling shutdown command: '%+v'", cmd),
-		Severity: logging.Notice,
-	})
+	notice.Printf("Calling shutdown command: '%+v'", cmd)
 	logger.Flush()
 
 	_ = cmd.Start()
 }
-
-// TODO: add log prefix with PID, e.g.:
-// systemd[7691]:
