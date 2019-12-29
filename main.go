@@ -3,11 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
-	"strings"
 	"time"
 
 	"cloud.google.com/go/logging"
@@ -40,18 +37,7 @@ func main() {
 		Severity: logging.Notice,
 	})
 
-	// Prepare the RCON password
-	pwBytes, errRF := ioutil.ReadFile("/opt/factorio/config/rconpw")
-	if errRF != nil {
-		logger.Log(logging.Entry{
-			Payload:  fmt.Sprintf("error reading password file: %v", errRF),
-			Severity: logging.Critical,
-		})
-		logger.Flush()
-		os.Exit(1)
-	}
-
-	rconPassword := strings.TrimSpace(string(pwBytes))
+	rconPassword := mustGetPassword(logger)
 
 	// Set up exponential backoff
 	b := &backoff.Backoff{
