@@ -9,17 +9,19 @@ import (
 	"cloud.google.com/go/logging"
 )
 
+// GCP project to send Stackdriver logs to
+const projectID = "jlucktay-factorio"
+
+// Sets the name of the log to write to
+const logName = "goppuku"
+
+// Address of RCON server
+const rconAddress = "127.0.0.1:27015"
+
 // Number of minutes for the server to be empty before shutting down
 const shutdownMinutes = 15
 
 func main() {
-	// GCP project to send Stackdriver logs to
-	const projectID = "jlucktay-factorio"
-	// Sets the name of the log to write to
-	const logName = "goppuku"
-	// Address of RCON server
-	const rconAddress = "127.0.0.1:27015"
-
 	// Create a logger client
 	ctx := context.Background()
 
