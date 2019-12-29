@@ -27,6 +27,7 @@ steps:
         path: /go
     commands:
       - go build
+      - rm -fv go-rcon
 
   # Run GoReleaser only on tags
   - name: release
