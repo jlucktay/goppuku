@@ -5,11 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
-	"time"
 
 	"cloud.google.com/go/logging"
-	rcon "github.com/gtaylor/factorio-rcon"
-	"github.com/jpillora/backoff"
 )
 
 // Number of minutes for the server to be empty before shutting down
@@ -37,54 +34,8 @@ func main() {
 		Severity: logging.Notice,
 	})
 
-	rconPassword := mustGetPassword(logger)
-
-	// Set up exponential backoff
-	b := &backoff.Backoff{
-		Max:    10 * time.Minute,
-		Jitter: true,
-	}
-
-	// Creates the RCON client and authenticates with the server
-	r, errDial := rcon.Dial(rconAddress)
-	for errDial != nil {
-		logger.Log(logging.Entry{
-			Payload:  fmt.Sprintf("error dialing: %v", errDial),
-			Severity: logging.Error,
-		})
-		time.Sleep(b.Duration())
-
-		r, errDial = rcon.Dial(rconAddress)
-	}
-	b.Reset()
-
+	r := dialAndAuth(logger)
 	defer r.Close()
-
-	errAuth := r.Authenticate(rconPassword)
-	for errAuth != nil && errDial != nil {
-		logger.Log(logging.Entry{
-			Payload:  fmt.Sprintf("error authenticating: %v", errAuth),
-			Severity: logging.Error,
-		})
-		time.Sleep(b.Duration())
-
-		r.Close()
-
-		r, errDial = rcon.Dial(rconAddress)
-		if errDial != nil {
-			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error redialing: %v", errAuth),
-				Severity: logging.Critical,
-			})
-			time.Sleep(b.Duration())
-
-			continue
-		}
-
-		errAuth = r.Authenticate(rconPassword)
-	}
-	b.Reset()
-
 	monitor(r, logger)
 
 	// Server seppuku
