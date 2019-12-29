@@ -56,7 +56,7 @@ func monitor(r *rcon.RCON, l *logging.Logger) {
 				Severity: logging.Notice,
 			})
 
-			break
+			return
 		}
 	}
 }
