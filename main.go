@@ -34,7 +34,7 @@ func main() {
 	logger := client.Logger(logName)
 
 	notice := logger.StandardLogger(logging.Notice)
-	notice.SetPrefix(fmt.Sprintf("%s[%d]", logName, os.Getpid()))
+	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 
 	notice.Printf("Dialling '%s' and authing...", rconAddress)
 

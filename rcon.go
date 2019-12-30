@@ -29,7 +29,7 @@ func dialAndAuth(l *logging.Logger) *rcon.RCON {
 		r, errDial = rcon.Dial(rconAddress)
 		if errDial != nil {
 			l.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error dialing: %v", errDial),
+				Payload:  fmt.Sprintf("error dialling: %v", errDial),
 				Severity: logging.Error,
 			})
 			time.Sleep(b.Duration())
