@@ -29,7 +29,7 @@ func dialAndAuth(l *logging.Logger) *rcon.RCON {
 		r, errDial = rcon.Dial(rconAddress)
 		if errDial != nil {
 			l.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error dialling: %v", errDial),
+				Payload:  fmt.Sprintf("error dialling address '%s': %v", rconAddress, errDial),
 				Severity: logging.Error,
 			})
 			time.Sleep(b.Duration())
@@ -40,7 +40,8 @@ func dialAndAuth(l *logging.Logger) *rcon.RCON {
 		errAuth = r.Authenticate(rconPassword)
 		if errAuth != nil {
 			l.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error authenticating: %v", errAuth),
+				Payload: fmt.Sprintf("error authenticating to address '%s' with password '%s': %v",
+					rconAddress, rconPassword, errAuth),
 				Severity: logging.Error,
 			})
 			r.Close()
