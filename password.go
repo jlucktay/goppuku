@@ -1,17 +1,17 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 
 	"cloud.google.com/go/logging"
 )
 
 // mustGetPassword prepares the RCON password.
 func mustGetPassword(l *logging.Logger) string {
-	pwBytes, errRF := ioutil.ReadFile("/opt/factorio/config/rconpw")
+	bPassword, errRF := ioutil.ReadFile("/opt/factorio/config/rconpw")
 	if errRF != nil {
 		l.Log(logging.Entry{
 			Payload:  fmt.Sprintf("error reading password file: %v", errRF),
@@ -21,5 +21,8 @@ func mustGetPassword(l *logging.Logger) string {
 		os.Exit(1)
 	}
 
-	return strings.TrimSpace(string(pwBytes))
+	bPasswordTrimmed := bytes.TrimSpace(bPassword)
+	sPassword := string(bPasswordTrimmed)
+
+	return sPassword
 }
