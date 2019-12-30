@@ -42,8 +42,8 @@ func dialAndAuth(l *logging.Logger) *rcon.RCON {
 		errAuth = r.Authenticate(rconPassword)
 		if errAuth != nil {
 			l.Log(logging.Entry{
-				Payload: fmt.Sprintf("error authenticating to address '%s' with password '%s': %v",
-					rconAddress, rconPassword, errAuth),
+				Payload: fmt.Sprintf("error authenticating to address '%s' with password %d characters long: %v",
+					rconAddress, len(rconPassword), errAuth),
 				Severity: logging.Error,
 			})
 			r.Close()
