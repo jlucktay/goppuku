@@ -36,6 +36,7 @@ func main() {
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 
+	notice.Print(versionDetails())
 	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
 	r := dialAndAuth(logger)
