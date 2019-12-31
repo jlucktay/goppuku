@@ -1,0 +1,21 @@
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - main: ./
+    flags:
+      - -v
+    env:
+      - CGO_ENABLED=0
+
+    ldflags:
+      - >
+        -s -w
+        -X github.com/jlucktay/gopukku.version={{.Version}}
+        -X github.com/jlucktay/gopukku.commit={{.ShortCommit}}
+        -X github.com/jlucktay/gopukku.date={{.Date}}
+        -X github.com/jlucktay/gopukku.builtBy=GoReleaser
+
+changelog:
+  sort: asc
