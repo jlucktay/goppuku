@@ -12,10 +12,10 @@ builds:
     ldflags:
       - >
         -s -w
-        -X github.com/jlucktay/gopukku.version={{.Version}}
-        -X github.com/jlucktay/gopukku.commit={{.ShortCommit}}
-        -X github.com/jlucktay/gopukku.date={{.Date}}
-        -X github.com/jlucktay/gopukku.builtBy=GoReleaser
+        -X 'main.version={{.Version}}'
+        -X 'main.commit={{.ShortCommit}}'
+        -X 'main.date={{.Date}}'
+        -X 'main.builtBy=GoReleaser'
 
 changelog:
   sort: asc
