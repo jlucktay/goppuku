@@ -1,4 +1,4 @@
-module github.com/jlucktay/factorio-workbench/go-rcon
+module github.com/jlucktay/gopukku
 
 go 1.13
 
