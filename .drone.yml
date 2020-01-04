@@ -27,7 +27,7 @@ steps:
         path: /go
     commands:
       - go build
-      - rm -fv gopukku
+      - go clean
 
   # Run GoReleaser only on tags
   - name: release
