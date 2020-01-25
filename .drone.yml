@@ -29,7 +29,7 @@ steps:
       - pwd
       - ls -Al
       - go build
-      - go clean
+      - go clean -i -x
       - pwd
       - ls -Al
 
