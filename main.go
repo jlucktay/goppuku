@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"os/signal"
+	"syscall"
 
 	"cloud.google.com/go/logging"
 )
@@ -33,21 +35,30 @@ func main() {
 	defer client.Close()
 	logger := client.Logger(logName)
 
+	// Handle incoming signals
+	cleanup := make(chan os.Signal)
+	signal.Notify(cleanup, os.Interrupt, syscall.SIGTERM)
+
+	go func(l *logging.Logger) {
+		<-cleanup
+		l.Flush()
+		os.Exit(1)
+	}(logger)
+
+	// Finish setting up logger
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
-
 	notice.Print(versionDetails())
 	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
+	// Main loop
 	r := dialAndAuth(logger)
 	defer r.Close()
-
 	notice.Print("Online!")
 	monitor(r, logger)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")
-
 	notice.Printf("Calling shutdown command: '%+v'", cmd)
 	logger.Flush()
 
