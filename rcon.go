@@ -14,9 +14,9 @@ import (
 func dialAndAuth(l *logging.Logger) *rcon.RCON {
 	// Set up exponential backoff
 	b := &backoff.Backoff{
-		Min:    3 * time.Second,
+		Min:    10 * time.Second,
 		Max:    5 * time.Minute,
-		Factor: 3,
+		Factor: 1.2,
 		Jitter: true,
 	}
 
