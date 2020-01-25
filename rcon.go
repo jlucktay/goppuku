@@ -12,8 +12,6 @@ import (
 
 // dialAndAuth creates the RCON client and authenticates with the server.
 func dialAndAuth(l *logging.Logger) *rcon.RCON {
-	rconPassword := mustGetPassword(l)
-
 	// Set up exponential backoff
 	b := &backoff.Backoff{
 		Min:    3 * time.Second,
@@ -39,11 +37,10 @@ func dialAndAuth(l *logging.Logger) *rcon.RCON {
 			continue
 		}
 
-		errAuth = r.Authenticate(rconPassword)
+		errAuth = r.Authenticate(mustGetPassword(l))
 		if errAuth != nil {
 			l.Log(logging.Entry{
-				Payload: fmt.Sprintf("error authenticating to address '%s' with password %d characters long: %v",
-					rconAddress, len(rconPassword), errAuth),
+				Payload:  fmt.Sprintf("error authenticating to address '%s': %v", rconAddress, errAuth),
 				Severity: logging.Error,
 			})
 			r.Close()
