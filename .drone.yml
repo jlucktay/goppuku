@@ -26,8 +26,12 @@ steps:
       - name: deps
         path: /go
     commands:
+      - pwd
+      - ls -Al
       - go build
       - go clean
+      - pwd
+      - ls -Al
 
   # Run GoReleaser only on tags
   - name: release
