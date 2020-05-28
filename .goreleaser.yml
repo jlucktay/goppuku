@@ -4,16 +4,19 @@ before:
 
 builds:
   - main: ./
+
     flags:
       - -v
+
     env:
       - CGO_ENABLED=0
+
     ldflags:
       - >
         -s -w
-        -X 'main.version={{.Version}}'
-        -X 'main.commit={{.ShortCommit}}'
-        -X 'main.date={{.Date}}'
+        -X 'main.version={{ .Version }}'
+        -X 'main.commit={{ .ShortCommit }}'
+        -X 'main.date={{ .Date }}'
         -X 'main.builtBy=GoReleaser'
 
 changelog:
