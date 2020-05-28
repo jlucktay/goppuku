@@ -44,6 +44,7 @@ func monitor(r *rcon.RCON, l *logging.Logger) {
 
 		if !anyOnline {
 			minutesEmpty++
+
 			l.Log(logging.Entry{
 				Payload:  fmt.Sprintf("Minutes without any online players: %d", minutesEmpty),
 				Severity: logging.Info,
