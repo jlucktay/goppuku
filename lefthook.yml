@@ -4,4 +4,4 @@ pre-push:
     drone:
       run: drone lint .drone.yml
     golangci-lint:
-      run: golangci-lint run --enable-all
+      run: golangci-lint run
