@@ -9,11 +9,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"cloud.google.com/go/compute/metadata"
 	"cloud.google.com/go/logging"
 )
-
-// GCP project to send Stackdriver logs to.
-const projectID = "jlucktay-factorio"
 
 // Sets the name of the log to write to.
 const logName = "goppuku"
@@ -25,6 +23,12 @@ const rconAddress = "127.0.0.1:27015"
 const shutdownMinutes = 15
 
 func main() {
+	// GCP project to send Stackdriver logs to.
+	projectID, err := metadata.ProjectID()
+	if err != nil {
+		log.Fatalf("could not fetch project ID from metadata: %v", err)
+	}
+
 	// Create a logger client
 	ctx := context.Background()
 
