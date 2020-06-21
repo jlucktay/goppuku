@@ -13,12 +13,12 @@ import (
 var errPlaceholder = errors.New("placeholder")
 
 // dialAndAuth creates the RCON client and authenticates with the server.
-func dialAndAuth(logger *logging.Logger) *rcon.RCON {
+func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 	// Set up exponential backoff
 	b := &backoff.Backoff{
-		Min:    10 * time.Second,
-		Max:    5 * time.Minute,
-		Factor: 1.2,
+		Min:    cfg.BackoffMin,
+		Max:    cfg.BackoffMax,
+		Factor: cfg.BackoffFactor,
 		Jitter: true,
 	}
 

@@ -11,6 +11,7 @@ import (
 
 	"cloud.google.com/go/compute/metadata"
 	"cloud.google.com/go/logging"
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
 // Sets the name of the log to write to.
@@ -53,10 +54,32 @@ func main() {
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 	notice.Print(versionDetails())
+
+	notice.Printf("Configuring RCON from environment...")
+
+	var cfg configRcon
+
+	errReadConf := cleanenv.ReadEnv(&cfg)
+	if errReadConf != nil {
+		envDesc, _ := cleanenv.GetDescription(&cfg, nil)
+
+		logger.Log(logging.Entry{
+			Payload:  envDesc,
+			Severity: logging.Warning,
+		})
+
+		logger.Log(logging.Entry{
+			Payload:  fmt.Errorf("could not configure RCON from environment: %w", errReadConf),
+			Severity: logging.Error,
+		})
+
+		cleanup <- syscall.SIGTERM
+	}
+
 	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
 	// Main loop
-	r := dialAndAuth(logger)
+	r := dialAndAuth(logger, cfg)
 	defer r.Close()
 	notice.Print("Online!")
 	monitor(r, logger)
