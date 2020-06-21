@@ -10,6 +10,8 @@ import (
 	"github.com/jpillora/backoff"
 )
 
+var errPlaceholder = errors.New("placeholder")
+
 // dialAndAuth creates the RCON client and authenticates with the server.
 func dialAndAuth(logger *logging.Logger) *rcon.RCON {
 	// Set up exponential backoff
@@ -22,8 +24,8 @@ func dialAndAuth(logger *logging.Logger) *rcon.RCON {
 
 	var r *rcon.RCON
 
-	errDial := errors.New("placeholder")
-	errAuth := errors.New("placeholder")
+	// Set placeholder errors before going into loop
+	errDial, errAuth := fmt.Errorf("%w", errPlaceholder), fmt.Errorf("%w", errPlaceholder)
 
 	for errDial != nil || errAuth != nil {
 		r, errDial = rcon.Dial(rconAddress)
