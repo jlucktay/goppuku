@@ -21,9 +21,6 @@ const logName = "goppuku"
 // Address of RCON server.
 const rconAddress = "127.0.0.1:27015"
 
-// Number of minutes for the server to be empty before shutting down.
-const shutdownMinutes = 15
-
 func Run(_ []string, stdout io.Writer) error {
 	log.SetOutput(stdout)
 
@@ -85,7 +82,7 @@ func Run(_ []string, stdout io.Writer) error {
 	r := dialAndAuth(logger, cfg)
 	defer r.Close()
 	notice.Print("Online!")
-	monitor(r, logger)
+	monitor(r, logger, cfg)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")

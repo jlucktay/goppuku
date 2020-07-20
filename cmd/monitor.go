@@ -8,13 +8,13 @@ import (
 	rcon "github.com/gtaylor/factorio-rcon"
 )
 
-func monitor(r *rcon.RCON, logger *logging.Logger) {
+func monitor(r *rcon.RCON, logger *logging.Logger, cfg configRcon) {
 	// Keep track of how long the server has been empty for
-	minutesEmpty := 0
+	emptySince := time.Now().UTC()
 
 	// Main monitoring loop
 	for {
-		time.Sleep(time.Minute)
+		time.Sleep(cfg.MonitorInterval)
 
 		players, errCP := r.CmdPlayers()
 		if errCP != nil {
@@ -36,24 +36,22 @@ func monitor(r *rcon.RCON, logger *logging.Logger) {
 		for _, player := range players {
 			if player.Online {
 				anyOnline = true
-				minutesEmpty = 0
+				emptySince = time.Now().UTC()
 
 				break
 			}
 		}
 
 		if !anyOnline {
-			minutesEmpty++
-
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("Minutes without any online players: %d", minutesEmpty),
+				Payload:  fmt.Sprintf("Time without any online players: %s", time.Now().UTC().Sub(emptySince)),
 				Severity: logging.Info,
 			})
 		}
 
-		if minutesEmpty >= shutdownMinutes {
+		if emptySince.Add(cfg.ShutdownLimit).Before(time.Now().UTC()) {
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("Threshold reached; %d minutes elapsed without any online players", shutdownMinutes),
+				Payload:  fmt.Sprintf("Threshold reached; %s elapsed without any online players", cfg.ShutdownLimit),
 				Severity: logging.Notice,
 			})
 
