@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -9,6 +9,6 @@ import (
 var version, commit, date, builtBy string //nolint:gochecknoglobals
 
 func versionDetails() string {
-	return fmt.Sprintf("gopukku %s from commit %s, built %s by %s with %s.",
-		version, commit, date, builtBy, runtime.Version())
+	return fmt.Sprintf("gopukku %s built from commit %s with %s on %s by %s.",
+		version, commit, runtime.Version(), date, builtBy)
 }
