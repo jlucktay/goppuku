@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"go.jlucktay.dev/gopukku/cmd"
+	"go.jlucktay.dev/goppuku/cmd"
 )
 
 func main() {

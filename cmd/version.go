@@ -9,6 +9,6 @@ import (
 var version, commit, date, builtBy string //nolint:gochecknoglobals
 
 func versionDetails() string {
-	return fmt.Sprintf("gopukku %s built from commit %s with %s on %s by %s.",
+	return fmt.Sprintf("goppuku %s built from commit %s with %s on %s by %s.",
 		version, commit, runtime.Version(), date, builtBy)
 }
