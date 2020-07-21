@@ -12,6 +12,7 @@ import (
 
 	"cloud.google.com/go/compute/metadata"
 	"cloud.google.com/go/logging"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
@@ -55,9 +56,9 @@ func Run(_ []string, stdout io.Writer) error {
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 	notice.Print(versionDetails())
 
-	notice.Printf("Configuring RCON from environment...")
+	notice.Printf("Loading configuration from environment...")
 
-	var cfg configRcon
+	var cfg config
 
 	errReadConf := cleanenv.ReadEnv(&cfg)
 	if errReadConf != nil {
@@ -69,20 +70,21 @@ func Run(_ []string, stdout io.Writer) error {
 		})
 
 		logger.Log(logging.Entry{
-			Payload:  fmt.Errorf("could not configure RCON from environment: %w", errReadConf),
+			Payload:  fmt.Errorf("could not load configuration from environment: %w", errReadConf),
 			Severity: logging.Error,
 		})
 
 		cleanup <- syscall.SIGTERM
 	}
 
+	notice.Printf("Configuration loaded:\n%s", spew.Sdump(cfg))
 	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
 	// Main loop
-	r := dialAndAuth(logger, cfg)
+	r := dialAndAuth(logger, cfg.RCON)
 	defer r.Close()
 	notice.Print("Online!")
-	monitor(r, logger, cfg)
+	monitor(r, logger, cfg.Monitor)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")
