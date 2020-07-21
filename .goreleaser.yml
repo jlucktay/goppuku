@@ -14,10 +14,10 @@ builds:
     ldflags:
       - >
         -s -w
-        -X 'main.version={{ .Version }}'
-        -X 'main.commit={{ .ShortCommit }}'
-        -X 'main.date={{ .Date }}'
-        -X 'main.builtBy=GoReleaser'
+        -X 'go.jlucktay.dev/goppuku/cmd.version={{ .Version }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.commit={{ .ShortCommit }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.date={{ .Date }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.builtBy=GoReleaser'
 
 changelog:
   sort: asc
