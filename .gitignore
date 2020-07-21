@@ -1,3 +1,9 @@
+# Binary
+goppuku
+
+# GoReleaser
+/dist/
+
 # Makefile things
 /out/
 /tmp/
