@@ -9,7 +9,7 @@ import (
 	"cloud.google.com/go/logging"
 )
 
-// mustGetPassword prepares the RCON password.
+// mustGetPassword fetches the RCON password.
 func mustGetPassword(l *logging.Logger) string {
 	bPassword, errRF := ioutil.ReadFile("/opt/factorio/config/rconpw")
 	if errRF != nil {

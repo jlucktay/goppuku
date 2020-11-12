@@ -75,13 +75,9 @@ func Run(_ []string, _ io.Writer) error {
 	}
 
 	notice.Printf("Configuration loaded:\n%s", spew.Sdump(cfg))
-	notice.Printf("Dialling '%s' and authing...", rconAddress)
 
 	// Main loop
-	r := dialAndAuth(logger, cfg.RCON)
-	defer r.Close()
-	notice.Print("Online!")
-	monitor(r, logger, cfg.Monitor)
+	monitor(logger, cfg)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")

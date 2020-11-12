@@ -24,6 +24,11 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 
 	var r *rcon.RCON
 
+	logger.Log(logging.Entry{
+		Payload:  fmt.Sprintf("Dialling '%s' and authing...", rconAddress),
+		Severity: logging.Notice,
+	})
+
 	// Set placeholder errors before going into loop
 	errDial, errAuth := errPlaceholder, errPlaceholder
 
@@ -49,6 +54,11 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 			time.Sleep(b.Duration())
 		}
 	}
+
+	logger.Log(logging.Entry{
+		Payload:  "Online!",
+		Severity: logging.Notice,
+	})
 
 	return r
 }
