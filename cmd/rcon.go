@@ -25,13 +25,13 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 	var r *rcon.RCON
 
 	// Set placeholder errors before going into loop
-	errDial, errAuth := fmt.Errorf("%w", errPlaceholder), fmt.Errorf("%w", errPlaceholder)
+	errDial, errAuth := errPlaceholder, errPlaceholder
 
 	for errDial != nil || errAuth != nil {
 		r, errDial = rcon.Dial(rconAddress)
 		if errDial != nil {
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error dialling address '%s': %v", rconAddress, errDial),
+				Payload:  fmt.Errorf("error dialling address '%s': %w", rconAddress, errDial),
 				Severity: logging.Error,
 			})
 			time.Sleep(b.Duration())
@@ -42,7 +42,7 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 		errAuth = r.Authenticate(mustGetPassword(logger))
 		if errAuth != nil {
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error authenticating to address '%s': %v", rconAddress, errAuth),
+				Payload:  fmt.Errorf("error authenticating to address '%s': %w", rconAddress, errAuth),
 				Severity: logging.Error,
 			})
 			r.Close()

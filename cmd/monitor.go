@@ -19,7 +19,7 @@ func monitor(r *rcon.RCON, logger *logging.Logger, cfg configMonitor) {
 		players, errCP := r.CmdPlayers()
 		if errCP != nil {
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("error fetching player count: %v", errCP),
+				Payload:  fmt.Errorf("error fetching player count: %w", errCP),
 				Severity: logging.Error,
 			})
 

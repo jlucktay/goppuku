@@ -14,7 +14,7 @@ func mustGetPassword(l *logging.Logger) string {
 	bPassword, errRF := ioutil.ReadFile("/opt/factorio/config/rconpw")
 	if errRF != nil {
 		l.Log(logging.Entry{
-			Payload:  fmt.Sprintf("error reading password file: %v", errRF),
+			Payload:  fmt.Errorf("error reading password file: %w", errRF),
 			Severity: logging.Critical,
 		})
 		l.Flush()

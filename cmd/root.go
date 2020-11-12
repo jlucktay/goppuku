@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -22,13 +21,11 @@ const logName = "goppuku"
 // Address of RCON server.
 const rconAddress = "127.0.0.1:27015"
 
-func Run(_ []string, stdout io.Writer) error {
-	log.SetOutput(stdout)
-
+func Run(_ []string, _ io.Writer) error {
 	// GCP project to send Stackdriver logs to.
 	projectID, err := metadata.ProjectID()
 	if err != nil {
-		log.Fatalf("could not fetch project ID from metadata: %v", err)
+		return fmt.Errorf("could not fetch project ID from metadata: %w", err)
 	}
 
 	// Create a logger client
@@ -36,7 +33,7 @@ func Run(_ []string, stdout io.Writer) error {
 
 	client, err := logging.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+		return fmt.Errorf("failed to create logging client: %w", err)
 	}
 	defer client.Close()
 	logger := client.Logger(logName)
