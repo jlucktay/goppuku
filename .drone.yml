@@ -41,7 +41,8 @@ steps:
     commands:
       - curl --location --silent https://git.io/goreleaser | bash
     when:
-      event: tag
+      event:
+        - tag
 
 # Preserve dependencies between steps
 volumes:

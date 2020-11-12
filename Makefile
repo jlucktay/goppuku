@@ -19,10 +19,10 @@ endif
 build: out/image-id
 .PHONY: build
 
-# Clean up the output directories; all the sentinel files go under tmp, so this will cause everything to get rebuilt.
+# Clean up the built binary and output directories.
+# All the sentinel files go under tmp, so this will cause everything to get rebuilt.
 clean:
-> rm -rf tmp
-> rm -rf out
+> rm -rf dist goppuku tmp out
 .PHONY: clean
 
 # Tests - re-run if any Go files have changes since tmp/.tests-passed.sentinel last touched.
@@ -41,6 +41,6 @@ tmp/.linted.sentinel: tmp/.tests-passed.sentinel
 # Docker image - re-build if the lint output is re-run.
 out/image-id: tmp/.linted.sentinel
 > mkdir -p $(@D)
-> image_id="example.com/my-app:$$(uuidgen)"
+> image_id="go.jlucktay.dev/goppuku:$$(uuidgen)"
 > docker build --tag="$${image_id}" .
 > echo "$${image_id}" > out/image-id
