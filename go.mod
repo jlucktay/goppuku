@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	cloud.google.com/go v0.72.0
-	cloud.google.com/go/logging v1.0.0
+	cloud.google.com/go/logging v1.1.2
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
 	github.com/ilyakaznacheev/cleanenv v1.2.5
