@@ -3,6 +3,12 @@ kind: pipeline
 type: docker
 name: default
 
+trigger:
+  event:
+    include:
+      - "pull_request"
+      - "tag"
+
 steps:
   # Drone does not pull git tags by default
   - name: fetch
