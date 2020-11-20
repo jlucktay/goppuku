@@ -47,7 +47,8 @@ func monitor(logger *logging.Logger, cfg config) {
 
 		if !anyOnline {
 			logger.Log(logging.Entry{
-				Payload:  fmt.Sprintf("Time without any online players: %s", time.Now().UTC().Sub(emptySince)),
+				Payload: fmt.Sprintf("Time without any online players: %s",
+					time.Now().UTC().Sub(emptySince).Truncate(time.Second)),
 				Severity: logging.Info,
 			})
 		}
