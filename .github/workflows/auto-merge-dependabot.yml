@@ -3,7 +3,7 @@ name: Auto merge Dependabot
 on: pull_request
 
 jobs:
-  auto-approve:
+  auto-merge:
     runs-on: ubuntu-latest
     steps:
       - name: Auto merge Dependabot
