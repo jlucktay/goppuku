@@ -21,7 +21,8 @@ const logName = "goppuku"
 // Address of RCON server.
 const rconAddress = "127.0.0.1:27015"
 
-func Run(_ []string, _ io.Writer) error {
+// Run is the core of goppuku's logic/flow.
+func Run(_ []string, stderr io.Writer) error {
 	// GCP project to send Stackdriver logs to.
 	projectID, err := metadata.ProjectID()
 	if err != nil {
@@ -35,16 +36,20 @@ func Run(_ []string, _ io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("failed to create logging client: %w", err)
 	}
-	defer client.Close()
+	defer client.Close() //nolint:errcheck // Don't let the door hit you on the way out
 	logger := client.Logger(logName)
 
 	// Handle incoming signals
-	cleanup := make(chan os.Signal)
+	cleanup := make(chan os.Signal, 1)
 	signal.Notify(cleanup, os.Interrupt, syscall.SIGTERM)
 
 	go func(l *logging.Logger) {
 		<-cleanup
-		l.Flush()
+
+		if err := l.Flush(); err != nil {
+			fmt.Fprintf(stderr, "could not flush logger: %v", err)
+		}
+
 		os.Exit(1)
 	}(logger)
 
@@ -52,14 +57,16 @@ func Run(_ []string, _ io.Writer) error {
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 	notice.Print(versionDetails())
-
-	notice.Printf("Loading configuration from environment...")
+	notice.Print("Loading configuration from environment...")
 
 	var cfg config
 
 	errReadConf := cleanenv.ReadEnv(&cfg)
 	if errReadConf != nil {
-		envDesc, _ := cleanenv.GetDescription(&cfg, nil)
+		envDesc, errGetDesc := cleanenv.GetDescription(&cfg, nil)
+		if errGetDesc != nil {
+			return fmt.Errorf("could not get description of environment variables: %w", errGetDesc)
+		}
 
 		logger.Log(logging.Entry{
 			Payload:  envDesc,
@@ -76,15 +83,23 @@ func Run(_ []string, _ io.Writer) error {
 
 	notice.Printf("Configuration loaded:\n%s", spew.Sdump(cfg))
 
+	// Store password in config struct _after_ spewing out all of the other settings
+	cfg.RCON.Password = mustGetPassword(logger)
+
 	// Main loop
 	monitor(logger, cfg)
 
 	// Server seppuku
 	cmd := exec.Command("shutdown", "--poweroff", "now")
-	notice.Printf("Calling shutdown command: '%+v'", cmd)
-	logger.Flush()
+	notice.Printf("Calling shutdown command: '%s'", cmd)
 
-	_ = cmd.Start()
+	if err := logger.Flush(); err != nil {
+		return fmt.Errorf("could not flush logger: %w", err)
+	}
+
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("error starting '%s' command: %w", cmd, err)
+	}
 
 	return nil
 }
