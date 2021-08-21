@@ -76,6 +76,9 @@ func Run(_ []string, _ io.Writer) error {
 
 	notice.Printf("Configuration loaded:\n%s", spew.Sdump(cfg))
 
+	// Store password in config struct _after_ spewing out all of the other settings
+	cfg.RCON.Password = mustGetPassword(logger)
+
 	// Main loop
 	monitor(logger, cfg)
 

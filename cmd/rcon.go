@@ -41,7 +41,7 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 			continue
 		}
 
-		errAuth = r.Authenticate(mustGetPassword(logger))
+		errAuth = r.Authenticate(cfg.Password)
 		if errAuth != nil {
 			logger.Log(logging.Entry{
 				Payload:  fmt.Errorf("error authenticating to address '%s': %w", rconAddress, errAuth),
