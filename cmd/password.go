@@ -17,7 +17,11 @@ func mustGetPassword(l *logging.Logger) string {
 			Payload:  fmt.Errorf("error reading password file: %w", errRF),
 			Severity: logging.Critical,
 		})
-		l.Flush()
+
+		if err := l.Flush(); err != nil {
+			fmt.Fprintf(os.Stderr, "could not flush logger: %v", err)
+		}
+
 		os.Exit(1)
 	}
 

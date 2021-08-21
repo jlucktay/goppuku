@@ -40,7 +40,7 @@ func Run(_ []string, stderr io.Writer) error {
 	logger := client.Logger(logName)
 
 	// Handle incoming signals
-	cleanup := make(chan os.Signal)
+	cleanup := make(chan os.Signal, 1)
 	signal.Notify(cleanup, os.Interrupt, syscall.SIGTERM)
 
 	go func(l *logging.Logger) {
@@ -97,5 +97,9 @@ func Run(_ []string, stderr io.Writer) error {
 		return fmt.Errorf("could not flush logger: %w", err)
 	}
 
-	return cmd.Start()
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("error starting '%s' command: %w", cmd, err)
+	}
+
+	return nil
 }
