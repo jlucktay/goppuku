@@ -47,7 +47,14 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 				Payload:  fmt.Errorf("error authenticating to address '%s': %w", rconAddress, errAuth),
 				Severity: logging.Error,
 			})
-			r.Close()
+
+			if errClose := r.Close(); errClose != nil {
+				logger.Log(logging.Entry{
+					Payload:  fmt.Errorf("error closing RCON: %w", errClose),
+					Severity: logging.Error,
+				})
+			}
+
 			time.Sleep(b.Duration())
 		}
 	}

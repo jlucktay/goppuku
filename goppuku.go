@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	if err := cmd.Run(os.Args, os.Stdout); err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
+	if err := cmd.Run(os.Args, os.Stderr); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 
 		return
 	}

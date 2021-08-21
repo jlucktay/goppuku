@@ -27,7 +27,12 @@ func monitor(logger *logging.Logger, cfg config) {
 			continue
 		}
 
-		r.Close()
+		if errClose := r.Close(); errClose != nil {
+			logger.Log(logging.Entry{
+				Payload:  fmt.Errorf("error closing RCON: %w", errClose),
+				Severity: logging.Error,
+			})
+		}
 
 		logger.Log(logging.Entry{
 			Payload:  fmt.Sprintf("%+v", players),
