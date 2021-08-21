@@ -37,9 +37,6 @@ linters-settings:
   gofumpt:
     extra-rules: true
 
-  golint:
-    min-confidence: 0
-
   govet:
     check-shadowing: true
     enable-all: true
@@ -47,9 +44,6 @@ linters-settings:
   lll:
     line-length: 120
     tab-width: 2
-
-  maligned:
-    suggest-new: true
 
   nakedret:
     max-func-lines: 25
@@ -65,6 +59,9 @@ linters-settings:
     allow-leading-space: false
     require-explanation: true
     require-specific: true
+
+  revive:
+    min-confidence: 0
 
   unparam:
     check-exported: true
@@ -100,18 +97,17 @@ linters:
     - goerr113
     - gofmt
     - gofumpt
-    - golint
     - gosec
     - gosimple
     - govet
     - ineffassign
     - lll
-    - maligned
     - nakedret
     - nestif
     - nlreturn
     - noctx
     - nolintlint
+    - revive
     - staticcheck
     - structcheck
     - stylecheck
