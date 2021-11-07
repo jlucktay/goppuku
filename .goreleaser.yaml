@@ -1,0 +1,41 @@
+builds:
+  - flags:
+      - -trimpath
+      - -v
+
+    ldflags:
+      - >
+        -s -w
+        -X 'go.jlucktay.dev/goppuku/cmd.version={{ .Version }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.commit={{ .ShortCommit }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.date={{ .Date }}'
+        -X 'go.jlucktay.dev/goppuku/cmd.builtBy=GoReleaser'
+
+    env:
+      - CGO_ENABLED=0
+
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    # Set the modified timestamp on the output binary, typically you would do this to ensure a build was reproducible.
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - replacements:
+      "386": i386
+      amd64: x86_64
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+changelog:
+  sort: asc
