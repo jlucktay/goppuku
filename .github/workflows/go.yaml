@@ -2,17 +2,19 @@ name: Go
 
 on:
   push:
-    tags:
-      - v*
     branches:
       - main
     paths:
       - "**.go"
+
   pull_request:
     branches:
       - main
     paths:
       - "**.go"
+
+permissions:
+  contents: read
 
 jobs:
   build:

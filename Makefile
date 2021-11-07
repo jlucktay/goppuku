@@ -28,7 +28,7 @@ clean:
 # Tests - re-run if any Go files have changes since tmp/.tests-passed.sentinel last touched.
 tmp/.tests-passed.sentinel: $(shell find . -type f -iname "*.go")
 > mkdir -p $(@D)
-> go test ./...
+> go test -cover -race -v ./...
 > touch $@
 
 # Lint - re-run if the tests have been re-run (and so, by proxy, whenever the source files have changed).
