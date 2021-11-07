@@ -47,11 +47,9 @@ func Run(_ []string, stderr io.Writer) error {
 	go func(l *logging.Logger) {
 		<-cleanup
 
-		if err := l.Flush(); err != nil {
-			fmt.Fprintf(stderr, "could not flush logger: %v", err)
+		if errFlush := l.Flush(); errFlush != nil {
+			fmt.Fprintf(stderr, "could not flush logger: %v", errFlush)
 		}
-
-		os.Exit(1)
 	}(logger)
 
 	// Finish setting up logger
@@ -70,8 +68,7 @@ func Run(_ []string, stderr io.Writer) error {
 
 	var cfg config
 
-	errReadConf := cleanenv.ReadEnv(&cfg)
-	if errReadConf != nil {
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
 		envDesc, errGetDesc := cleanenv.GetDescription(&cfg, nil)
 		if errGetDesc != nil {
 			return fmt.Errorf("could not get description of environment variables: %w", errGetDesc)
@@ -83,11 +80,13 @@ func Run(_ []string, stderr io.Writer) error {
 		})
 
 		logger.Log(logging.Entry{
-			Payload:  fmt.Errorf("could not load configuration from environment: %w", errReadConf),
+			Payload:  fmt.Errorf("could not load configuration from environment: %w", err),
 			Severity: logging.Error,
 		})
 
 		cleanup <- syscall.SIGTERM
+
+		return fmt.Errorf("could not read environment variables: %w", err)
 	}
 
 	notice.Printf("Configuration loaded:\n%s", spew.Sdump(cfg))
