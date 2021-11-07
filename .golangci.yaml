@@ -5,6 +5,7 @@ issues:
     - ^should have a package comment, unless it's in another file for this package$
   max-issues-per-linter: 0
   max-same-issues: 0
+  new-from-rev: origin/main
 
 linters-settings:
   dogsled:
@@ -21,7 +22,7 @@ linters-settings:
     errorf: true
 
   gci:
-    local-prefixes: go.jlucktay.dev/factorio-server-kit/goppuku
+    local-prefixes: go.jlucktay.dev/goppuku
 
   goconst:
     min-len: 3
