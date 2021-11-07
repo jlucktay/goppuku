@@ -21,7 +21,7 @@ linters-settings:
     errorf: true
 
   gci:
-    local-prefixes: go.jlucktay.dev/factorio-server-kit/goppuku
+    local-prefixes: go.jlucktay.dev/goppuku
 
   goconst:
     min-len: 3
