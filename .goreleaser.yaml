@@ -5,11 +5,11 @@ builds:
 
     ldflags:
       - >
-        -s -w
-        -X 'go.jlucktay.dev/goppuku/cmd.version={{ .Version }}'
-        -X 'go.jlucktay.dev/goppuku/cmd.commit={{ .ShortCommit }}'
-        -X 'go.jlucktay.dev/goppuku/cmd.date={{ .Date }}'
-        -X 'go.jlucktay.dev/goppuku/cmd.builtBy=GoReleaser'
+        -X 'go.jlucktay.dev/version.buildDate={{ .Date }}'
+        -X 'go.jlucktay.dev/version.builtBy=GoReleaser'
+        -X 'go.jlucktay.dev/version.commit={{ .ShortCommit }}'
+        -X 'go.jlucktay.dev/version.executable={{ .ProjectName }}'
+        -X 'go.jlucktay.dev/version.version={{ .Version }}'
 
     env:
       - CGO_ENABLED=0

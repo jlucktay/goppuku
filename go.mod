@@ -9,5 +9,6 @@ require (
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
 	github.com/ilyakaznacheev/cleanenv v1.2.5
 	github.com/jpillora/backoff v1.0.0
+	go.jlucktay.dev/version v0.1.1
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

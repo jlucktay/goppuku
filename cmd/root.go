@@ -13,6 +13,7 @@ import (
 	"cloud.google.com/go/logging"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/ilyakaznacheev/cleanenv"
+	"go.jlucktay.dev/version"
 )
 
 // Sets the name of the log to write to.
@@ -56,7 +57,15 @@ func Run(_ []string, stderr io.Writer) error {
 	// Finish setting up logger
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
-	notice.Print(versionDetails())
+
+	verDets, err := version.Details()
+	if err != nil {
+		cleanup <- syscall.SIGTERM
+
+		return fmt.Errorf("could not get version details: %w", err)
+	}
+
+	notice.Print(verDets)
 	notice.Print("Loading configuration from environment...")
 
 	var cfg config
