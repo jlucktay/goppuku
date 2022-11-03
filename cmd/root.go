@@ -56,14 +56,7 @@ func Run(_ []string, stderr io.Writer) error {
 	notice := logger.StandardLogger(logging.Notice)
 	notice.SetPrefix(fmt.Sprintf("%s[%d]: ", logName, os.Getpid()))
 
-	verDets, err := version.Details()
-	if err != nil {
-		cleanup <- syscall.SIGTERM
-
-		return fmt.Errorf("could not get version details: %w", err)
-	}
-
-	notice.Print(verDets)
+	notice.Print(version.Details())
 	notice.Print("Loading configuration from environment...")
 
 	var cfg config
