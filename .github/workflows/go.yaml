@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - "**.go"
+
   pull_request:
     branches:
       - main
@@ -29,9 +30,9 @@ jobs:
     strategy:
       matrix:
         go-version:
-          - "1.17"
           - "1.18"
           - "1.19"
+          - "1.20"
         platform:
           - ubuntu-latest
           - macos-latest
@@ -91,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out ${{ github.repository }} - all history
+      - name: Checkout ${{ github.repository }} - all history
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -101,10 +102,10 @@ jobs:
           git branch --all --contains '${{ github.ref }}' --no-column --format='%(refname)'
           | grep -c '\/main$'
 
-      - name: Set up Go 1.19
+      - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: "1.19"
+          go-version: "1.20"
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
