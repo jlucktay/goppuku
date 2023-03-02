@@ -24,15 +24,25 @@ builds:
     # List of combinations of GOOS + GOARCH + GOARM to ignore.
     # Default is empty.
     ignore:
-      - goos: darwin
-        goarch: "386"
+      - goarch: "386"
+
+      - goos: linux
+        goarch: arm
+        goarm: 7
+
+      - goarm: mips64
+
+      - gomips: hardfloat
+
+      - goamd64: v4
 
     # Set the modified timestamp on the output binary, typically you would do this to ensure a build was reproducible.
     # Pass empty string to skip modifying the output.
     mod_timestamp: "{{ .CommitTimestamp }}"
 
 archives:
-  - replacements:
+  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    replacements:
       386: i386
       amd64: x86_64
       darwin: Darwin
