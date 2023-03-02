@@ -9,7 +9,7 @@ require (
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
 	github.com/ilyakaznacheev/cleanenv v1.4.0
 	github.com/jpillora/backoff v1.0.0
-	go.jlucktay.dev/version v0.3.0
+	go.jlucktay.dev/version v0.4.1
 )
 
 require (
