@@ -146,7 +146,7 @@ tmp/.linted.go.vet.sentinel: tmp/.tests-passed.sentinel
 
 tmp/.linted.golangci-lint.sentinel: .golangci.yaml hack/bin/golangci-lint tmp/.tests-passed.sentinel
 > mkdir -p $(@D)
-> hack/bin/golangci-lint run --verbose
+> hack/bin/golangci-lint run --verbose ./...
 > touch $@
 
 gofmt: ## Runs 'gofmt -s' to format and simplify all Go code.
