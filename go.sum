@@ -76,8 +76,8 @@ github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpE
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
-go.jlucktay.dev/version v0.4.1 h1:4TrgEqd5b1ir2pZUgkKg3SuKgOv+P+VWgfzh0Di3cKc=
-go.jlucktay.dev/version v0.4.1/go.mod h1:Hc4LdqGvl1I33zgVzHO2ypK/kQuBlwcPUsHEKBSSSpo=
+go.jlucktay.dev/version v0.5.0 h1:QIflJrkF/T2McJDPtoIO98SSjekHWXlUtFcYDCOCjAU=
+go.jlucktay.dev/version v0.5.0/go.mod h1:Hc4LdqGvl1I33zgVzHO2ypK/kQuBlwcPUsHEKBSSSpo=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
 go.opencensus.io v0.24.0/go.mod h1:vNK8G9p7aAivkbmorf4v+7Hgx+Zs0yY+0fOtgBfjQKo=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
