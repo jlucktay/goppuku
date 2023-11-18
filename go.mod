@@ -7,9 +7,9 @@ require (
 	cloud.google.com/go/logging v1.8.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
-	github.com/ilyakaznacheev/cleanenv v1.4.2
+	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jpillora/backoff v1.0.0
-	go.jlucktay.dev/version v0.4.1
+	go.jlucktay.dev/version v0.5.0
 )
 
 require (
@@ -22,7 +22,7 @@ require (
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
-	github.com/joho/godotenv v1.4.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.15.0 // indirect
