@@ -13,6 +13,7 @@ import (
 	"cloud.google.com/go/logging"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/ilyakaznacheev/cleanenv"
+
 	"go.jlucktay.dev/version"
 )
 

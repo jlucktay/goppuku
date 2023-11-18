@@ -9,15 +9,15 @@ import (
 )
 
 // mustGetPassword fetches the RCON password.
-func mustGetPassword(l *logging.Logger) string {
+func mustGetPassword(logger *logging.Logger) string {
 	bPassword, errRF := os.ReadFile("/opt/factorio/config/rconpw")
 	if errRF != nil {
-		l.Log(logging.Entry{
+		logger.Log(logging.Entry{
 			Payload:  fmt.Errorf("error reading password file: %w", errRF),
 			Severity: logging.Critical,
 		})
 
-		if err := l.Flush(); err != nil {
+		if err := logger.Flush(); err != nil {
 			fmt.Fprintf(os.Stderr, "could not flush logger: %v", err)
 		}
 

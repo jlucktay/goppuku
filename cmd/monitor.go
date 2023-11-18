@@ -15,9 +15,9 @@ func monitor(logger *logging.Logger, cfg config) {
 	for {
 		time.Sleep(cfg.Monitor.MonitorInterval)
 
-		r := dialAndAuth(logger, cfg.RCON)
+		rcon := dialAndAuth(logger, cfg.RCON)
 
-		players, errCP := r.CmdPlayers()
+		players, errCP := rcon.CmdPlayers()
 		if errCP != nil {
 			logger.Log(logging.Entry{
 				Payload:  fmt.Errorf("error fetching player count: %w", errCP),
@@ -27,7 +27,7 @@ func monitor(logger *logging.Logger, cfg config) {
 			continue
 		}
 
-		if errClose := r.Close(); errClose != nil {
+		if errClose := rcon.Close(); errClose != nil {
 			logger.Log(logging.Entry{
 				Payload:  fmt.Errorf("error closing RCON: %w", errClose),
 				Severity: logging.Error,
