@@ -6,23 +6,23 @@ import (
 	"time"
 
 	"cloud.google.com/go/logging"
-	rcon "github.com/gtaylor/factorio-rcon"
+	factorioRCON "github.com/gtaylor/factorio-rcon"
 	"github.com/jpillora/backoff"
 )
 
 var errPlaceholder = errors.New("placeholder")
 
 // dialAndAuth creates the RCON client and authenticates with the server.
-func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
+func dialAndAuth(logger *logging.Logger, cfg configRcon) *factorioRCON.RCON {
 	// Set up exponential backoff
-	b := &backoff.Backoff{
+	backoff := &backoff.Backoff{
 		Min:    cfg.BackoffMin,
 		Max:    cfg.BackoffMax,
 		Factor: cfg.BackoffFactor,
 		Jitter: true,
 	}
 
-	var r *rcon.RCON
+	var rcon *factorioRCON.RCON
 
 	logger.Log(logging.Entry{Payload: fmt.Sprintf("Dialling '%s' and authing...", rconAddress)})
 
@@ -30,36 +30,36 @@ func dialAndAuth(logger *logging.Logger, cfg configRcon) *rcon.RCON {
 	errDial, errAuth := errPlaceholder, errPlaceholder
 
 	for errDial != nil || errAuth != nil {
-		r, errDial = rcon.Dial(rconAddress)
+		rcon, errDial = factorioRCON.Dial(rconAddress)
 		if errDial != nil {
 			logger.Log(logging.Entry{
 				Payload:  fmt.Errorf("error dialling address '%s': %w", rconAddress, errDial),
 				Severity: logging.Error,
 			})
-			time.Sleep(b.Duration())
+			time.Sleep(backoff.Duration())
 
 			continue
 		}
 
-		errAuth = r.Authenticate(cfg.Password)
+		errAuth = rcon.Authenticate(cfg.Password)
 		if errAuth != nil {
 			logger.Log(logging.Entry{
 				Payload:  fmt.Errorf("error authenticating to address '%s': %w", rconAddress, errAuth),
 				Severity: logging.Error,
 			})
 
-			if errClose := r.Close(); errClose != nil {
+			if errClose := rcon.Close(); errClose != nil {
 				logger.Log(logging.Entry{
 					Payload:  fmt.Errorf("error closing RCON: %w", errClose),
 					Severity: logging.Error,
 				})
 			}
 
-			time.Sleep(b.Duration())
+			time.Sleep(backoff.Duration())
 		}
 	}
 
 	logger.Log(logging.Entry{Payload: "Online!"})
 
-	return r
+	return rcon
 }
