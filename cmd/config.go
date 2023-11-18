@@ -1,8 +1,14 @@
 package cmd
 
-import "time"
+import (
+	"time"
+
+	"go.jlucktay.dev/goppuku/pkg/condition"
+)
 
 type config struct {
+	Conditions []condition.Trigger
+
 	RCON    configRcon
 	Monitor configMonitor
 }
