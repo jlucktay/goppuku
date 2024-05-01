@@ -3,7 +3,7 @@ module go.jlucktay.dev/goppuku
 go 1.20
 
 require (
-	cloud.google.com/go/compute/metadata v0.2.3
+	cloud.google.com/go/compute/metadata v0.3.0
 	cloud.google.com/go/logging v1.9.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
@@ -14,7 +14,6 @@ require (
 
 require (
 	cloud.google.com/go v0.110.9 // indirect
-	cloud.google.com/go/compute v1.23.2 // indirect
 	cloud.google.com/go/longrunning v0.5.3 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
