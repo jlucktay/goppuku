@@ -75,10 +75,10 @@ jobs:
 
       # Cannot use Docker on macOS runners: https://github.community/t/why-is-docker-not-installed-on-macos/17017
       - if: ${{ matrix.platform == 'macos-latest' }}
-        name: Install 'make' and run 'make test' on macOS
+        name: Install 'make' and run '.../make test' on macOS
         run: |
           brew install make
-          /usr/local/opt/make/libexec/gnubin/make test
+          /opt/homebrew/opt/make/libexec/gnubin/make test
 
   release:
     name: Release 'v*'' tags
