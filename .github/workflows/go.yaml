@@ -44,7 +44,7 @@ jobs:
           cache-dependency-path: '**/go.sum'
 
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -91,7 +91,7 @@ jobs:
 
     steps:
       - name: Checkout ${{ github.repository }} - all history
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
