@@ -1,9 +1,9 @@
 module go.jlucktay.dev/goppuku
 
-go 1.24
+go 1.24.0
 
 require (
-	cloud.google.com/go/compute/metadata v0.8.0
+	cloud.google.com/go/compute/metadata v0.9.0
 	cloud.google.com/go/logging v1.13.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gtaylor/factorio-rcon v0.0.0-20170109054031-61bdfe779ea6
@@ -35,7 +35,7 @@ require (
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 	google.golang.org/api v0.214.0 // indirect
